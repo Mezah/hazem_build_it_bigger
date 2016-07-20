@@ -2,6 +2,7 @@ package com.udacity.gradle.builditbigger;
 
 import android.content.Context;
 import android.test.AndroidTestCase;
+import android.util.Log;
 import android.util.Pair;
 
 import java.util.Random;
@@ -25,12 +26,36 @@ public class EndPointAsyncTaskTest extends AndroidTestCase {
         int index=random.nextInt(15);
         try {
             EndpointsAsyncTask async=new EndpointsAsyncTask(null);
+
             String result = async.execute(new Pair<Context, String>(mContext, index + "")).get();
-            assertTrue("Error: THe Result from Backend is empty",result.isEmpty());
+
+            assertFalse("Error: The Result from Backend is empty",result.isEmpty());
+            assertFalse("Error: The Connection to the appengine Failed",TestUtil.testIfConnectionFail(result));
+            Log.d("Joke",result);
         }catch (Exception e){
             e.printStackTrace();
         }
 
+
+    }
+
+    public void testJokeNumber(){
+
+        // must no exceed 15 (number of jokes array)
+        int index=10;
+
+
+        try {
+            EndpointsAsyncTask async=new EndpointsAsyncTask(null);
+
+            String result = async.execute(new Pair<Context, String>(mContext, index + "")).get();
+
+            assertTrue("Error: Wrong Joke returned",TestUtil.checkJokeNumber(result,index));
+
+            Log.d("Joke",result);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 }
