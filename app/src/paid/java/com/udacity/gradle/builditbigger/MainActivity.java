@@ -56,9 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
         Random random=new Random();
         int id=random.nextInt(15);
-
-//        Toast.makeText(this, id+"", Toast.LENGTH_SHORT).show();
-
         new EndpointsAsyncTask(loadingBar).execute(new Pair<Context, String>(this,id+""));
     }
 
